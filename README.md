@@ -23,7 +23,30 @@ https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Datas
 
 Steps taken with this script:
 
-1) Load the features (aka measurements) and activity labels from their respective files, and add appropriate column names
-2) Remove innapropriate characters from measurements so that they can be used as column names
-3) Load test and 
+* Load the features (aka measurements) and activity labels from their respective files, and add appropriate column names
+* Remove innapropriate characters from measurements so that they can be used as column names
+* For both test and training data subsets:
+  * Load primary data set, corresponding activity labels ("y".csv) and subject labels
+  * Add column names, using measurement labels from features.txt to label columns in primary data set
+  * Complete dataset by appending activity and subject labels as columns
+* Merge test and training subsets into "merge.data" set, combining test and train data
+* Remove any columns with duplicate names (to allow for dplyr select later)
+* Use dplyr to subset the merged data, keeping only our labels + the mean and std measurements for each smartphone feature
+* re-order columns to bring all labels/factors up front
+* Melt data into a new dataset using tidyr gather to allow us to easily:
+  * group by subject.id and activity.type
+  * Calculate average(mean) of the two entries (test+train) for each subject.id,activty.type and measurement
+* Spread the data into a final dataset, returning each measurement to its own column
+* Cleans up all but the two necessary outputs: merge.data and final.data
+
+run_analysis outputs:
+
+* merge.data: A tidy dataset with 10,299 observations of 69 variables that is a merge of all test and training data with all appropriate labels, removing any measurement that is not either a mean or a standard deviation. 
+
+* final.data: a tidy dataset with 180 observations of 68 variables, with each observation showing the average of a subject's test and training data for every activity across every applicable measure.
+
+
+
+
+
 
